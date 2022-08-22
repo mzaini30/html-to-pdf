@@ -1,0 +1,35 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Document
+    script(src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.js")
+  body 
+    script 
+      :coffee
+
+        html = """
+          <h1>Hello World!</h1>
+          <p>This is a paragraph.</p>
+          <ol>
+            <li>Halo....</li>
+            <li>Halo....</li>
+            <li>Halo....</li>
+            <li>Halo....</li>
+          </ol>
+        """
+        iframe = document.createElement("iframe");
+        document.body.appendChild(iframe); 
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(html);
+        iframe.contentWindow.document.close();
+
+        canvas = await html2canvas iframe.contentWindow.document.body
+
+        gambar = canvas.toDataURL("image/jpeg")
+        pdf = new jspdf.jsPDF()
+        pdf.addImage(gambar, "JPEG", 0, 0)
+        pdf.save("hasil.pdf")
